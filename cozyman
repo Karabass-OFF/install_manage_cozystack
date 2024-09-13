@@ -88,10 +88,30 @@ curl -LO https://github.com/kvaps/kubectl-node-shell/raw/master/kubectl-node_she
 chmod +x ./kubectl-node_shell
 sudo mv ./kubectl-node_shell /usr/local/bin/kubectl-node_shell
 
-curl -LO https://github.com/aenix-io/talm/releases/download/v0.5.7/talm-linux-amd64
-chmod +x ./talm-linux-amd64
-sudo mv ./talm-linux-amd64 /usr/local/bin/talm
+# Получаем список версий с помощью GitHub API и выводим их
+echo "Получаем список доступных версий..."
+versions=$(curl -s https://api.github.com/repos/aenix-io/talm/releases | grep -Po '"tag_name": "\K[^"]+')
 
+# Если список версий пустой, выводим ошибку и выходим
+[[ -z "$versions" ]] && { echo "Не удалось получить список версий."; exit 1; }
+
+# Выводим версии и предлагаем выбор
+echo "Доступные версии:"
+select version in $versions; do
+  [[ -n "$version" ]] && break
+  echo "Некорректный выбор. Попробуйте снова."
+done
+
+# Формируем ссылку на скачивание
+download_url="https://github.com/aenix-io/talm/releases/download/$version/talm-linux-amd64"
+
+# Скачиваем и устанавливаем выбранную версию
+echo "Скачиваем talm версии $version..."
+curl -LO $download_url && chmod +x talm-linux-amd64 && sudo mv talm-linux-amd64 /usr/local/bin/talm
+
+# Проверяем успешность установки
+echo "Проверка установки..."
+talm --version && echo "talm успешно установлен!" || echo "Ошибка установки."
 
 echo "Укажите название директории для конфигурационных файлов,"
 echo -e "директория будет располагаться в каталоге ${GREEN}/opt/${NC}. По умолчанию: ${GREEN}/opt/cozystack${NC}"
