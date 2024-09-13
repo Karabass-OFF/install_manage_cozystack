@@ -89,7 +89,7 @@ chmod +x ./kubectl-node_shell
 sudo mv ./kubectl-node_shell /usr/local/bin/kubectl-node_shell
 
 # Получаем список версий с помощью GitHub API и выводим их
-echo "Получаем список доступных версий..."
+echo "Получаем список доступных версий talm"
 versions=$(curl -s https://api.github.com/repos/aenix-io/talm/releases | grep -Po '"tag_name": "\K[^"]+')
 
 # Если список версий пустой, выводим ошибку и выходим
