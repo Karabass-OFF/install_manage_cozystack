@@ -53,9 +53,36 @@ wget $url -O kubectl
 chmod +x kubectl
 sudo mv kubectl /usr/local/bin/
 
-curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+# Получаем список доступных версий Helm через GitHub API
+echo "Получаем список доступных версий Helm..."
+versions=$(curl -s https://api.github.com/repos/helm/helm/releases | grep -Po '"tag_name": "\Kv[0-9]+\.[0-9]+\.[0-9]+')
+
+# Проверяем, удалось ли получить список версий
+if [ -z "$versions" ]; then
+  echo "Не удалось получить список версий."
+  exit 1
+fi
+
+# Выводим версии и предлагаем выбор
+echo "Доступные версии Helm:"
+select version in $versions; do
+  [[ -n "$version" ]] && break
+  echo "Некорректный выбор. Попробуйте снова."
+done
+
+# Формируем ссылку на скачивание скрипта для выбранной версии
+echo "Скачиваем и устанавливаем Helm версии $version..."
+curl -fsSL -o get_helm.sh "https://raw.githubusercontent.com/helm/helm/${version}/scripts/get-helm-3"
 chmod 700 get_helm.sh
 ./get_helm.sh
+
+# Проверяем успешную установку Helm
+if command -v helm &> /dev/null; then
+    echo "Helm версии $version успешно установлен!"
+    helm version
+else
+    echo "Ошибка установки Helm."
+fi
 
 curl -LO https://github.com/kvaps/kubectl-node-shell/raw/master/kubectl-node_shell
 chmod +x ./kubectl-node_shell
