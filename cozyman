@@ -154,6 +154,7 @@ fi
 sysctl -p
 apt -y install iptables-persistent 
 
+url="https://cozystack.io/docs/talos/configuration/talos-bootstrap/"
 TALOSV=$(curl -s "$url" | grep -oP 'ghcr\.io/aenix-io/cozystack/talos:\K[^<]+')
 
 cat > /opt/$cozystack/patch.yaml <<EOT
