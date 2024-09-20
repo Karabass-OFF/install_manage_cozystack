@@ -229,6 +229,7 @@ echo "talosctl   in folder" $(which  talosctl)
 echo "dialog     in folder" $(which  dialog)
 echo "nmap       in folder" $(which  nmap)
 echo "talm       in folder" $(which  talm)
+echo "k9s       in folder" $(which  k9s)
 echo "node_shell       in folder" $(which  kubectl-node_shell)
 echo -e "${YELLOW}========== services runing ===========${NC}"
 echo -ne "DNS Bind9       ${GREEN}"; systemctl is-active bind9 
