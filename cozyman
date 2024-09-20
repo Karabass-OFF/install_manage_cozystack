@@ -214,6 +214,8 @@ cluster:
     - $IPEK
 EOT
 
+curl -sS https://webinstall.dev/k9s | bash
+
 echo 'alias k=kubectl' >> ~/.bashrc
 echo 'source <(kubectl completion bash)' >>  ~/.bashrc
 echo 'complete -o default -F __start_kubectl k' >>  ~/.bashrc
