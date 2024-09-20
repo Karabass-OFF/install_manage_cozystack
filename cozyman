@@ -228,6 +228,11 @@ echo 'alias k=kubectl' >> ~/.bashrc
 echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
 source ~/.bashrc
 
+mkdir $HOME/.kube/
+mkdir $HOME/.talos/
+cp -i kubeconfig $HOME/.kube/config
+cp -i talosconfig $HOME/.talos/config
+
 echo -e "${YELLOW}========== Installed binary ===========${NC}"
 echo "helm       in folder" $(which helm)
 echo "yq         in folder" $(which yq)
