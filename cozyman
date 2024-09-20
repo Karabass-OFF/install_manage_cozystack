@@ -217,9 +217,16 @@ EOT
 curl -sS https://webinstall.dev/k9s | bash
 echo "talm       in folder" $(which  talm)
 ### hot key k
+#echo 'alias k=kubectl' >> ~/.bashrc
+#echo 'source <(kubectl completion bash)' >>  ~/.bashrc
+#echo 'complete -o default -F __start_kubectl k' >>  ~/.bashrc
+
+ 
+echo 'source <(kubectl completion bash)' >> ~/.bashrc
+echo 'source /usr/share/bash-completion/bash_completion' >> ~/.bashrc
 echo 'alias k=kubectl' >> ~/.bashrc
-echo 'source <(kubectl completion bash)' >>  ~/.bashrc
-echo 'complete -o default -F __start_kubectl k' >>  ~/.bashrc
+echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
+source ~/.bashrc
 
 echo -e "${YELLOW}========== Installed binary ===========${NC}"
 echo "helm       in folder" $(which helm)
