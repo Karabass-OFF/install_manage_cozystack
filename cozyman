@@ -229,8 +229,8 @@ echo "nmap       in folder" $(which  nmap)
 echo "talm       in folder" $(which  talm)
 echo "node_shell       in folder" $(which  kubectl-node_shell)
 echo -e "${YELLOW}========== services runing ===========${NC}"
-echo "DNS Bind9"; systemctl is-active bind9 
-echo "NTP"; systemctl is-active ntp
+echo -n "DNS Bind9      "; systemctl is-active bind9 
+echo -n "NTP            "; systemctl is-active ntp
 echo -e "${YELLOW}========== ADD Iptables Rule ===========${NC}"
 iptables -S | grep $cozystack
 iptables -t nat -S | grep $cozystack
