@@ -19,7 +19,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o 
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 apt update
-apt install  -y docker-ce snapd make dialog nmap 
+apt install  -y docker-ce snapd make dialog nmap  bash-completion
 #systemctl status docker
 #curl -sL https://talos.dev/install | sh
 
@@ -213,6 +213,10 @@ cluster:
     advertisedSubnets:
     - $IPEK
 EOT
+
+echo 'alias k=kubectl' >> ~/.bashrc
+echo 'source <(kubectl completion bash)' >>  ~/.bashrc
+echo 'complete -o default -F __start_kubectl k' >>  ~/.bashrc
 
 echo -e "${YELLOW}========== Installed binary ===========${NC}"
 echo "helm       in folder" $(which helm)
