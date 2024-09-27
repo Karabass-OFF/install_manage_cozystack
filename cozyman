@@ -12,7 +12,8 @@ apt -y install ntp bind9 curl jq nload
 service ntp restart
 #service ntp status
 sed -i -r 's/listen-on-v6/listen-on/g'  /etc/bind/named.conf.options 
-sed -i '/listen-on/a \\tallow-query { any; };'  /etc/bind/named.conf.options 
+#sed -i '/listen-on/a \\tallow-query { any; };'  /etc/bind/named.conf.options 
+grep -q 'allow-query { any; };' /etc/bind/named.conf.options || sed -i '/listen-on/a \\tallow-query { any; };' /etc/bind/named.conf.options
 apt -y  install apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 
