@@ -39,33 +39,45 @@ wget $url -O talosctl
 chmod +x talosctl
 sudo mv talosctl /usr/local/bin/
 #kubectl
+# Получаем версии и проверяем доступность URL
+echo -e "${YELLOW}Получаем список доступных версий kubectl...${NC}"
 releases=$(curl -s https://api.github.com/repos/kubernetes/kubernetes/releases | jq -r '.[].tag_name' | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | head -n 10)
+
+# Фильтруем только доступные для скачивания версии
+available_versions=()
+for version in $releases; do
+    url="https://storage.googleapis.com/kubernetes-release/release/${version}/bin/linux/amd64/kubectl"
+    if curl --output /dev/null --silent --head --fail "$url"; then
+        available_versions+=("$version")
+    fi
+done
+
+# Проверка, есть ли доступные версии
+if [ ${#available_versions[@]} -eq 0 ]; then
+    echo -e "${RED}Нет доступных версий для загрузки. Попробуйте позже.${NC}"
+    exit 1
+fi
+
 echo -e "${YELLOW}Выберите версию kubectl для скачивания:${NC}"
 
-while true; do
-    select version in $releases; do
-        if [[ -n "$version" ]]; then
-            echo "Вы выбрали версию $version"
-            
-            # Проверка доступности файла
-            url="https://storage.googleapis.com/kubernetes-release/release/${version}/bin/linux/amd64/kubectl"
-            if curl --output /dev/null --silent --head --fail "$url"; then
-                # Загрузка kubectl
-                echo "Загружается kubectl версия $version ..."
-                curl -LO "$url"
-                chmod +x kubectl
-                sudo mv kubectl /usr/local/bin/
-                echo -e "${GREEN}kubectl версия $version успешно установлена!${NC}"
-                exit 0
-            else
-                echo -e "${RED}Выбранная версия $version недоступна для скачивания. Пожалуйста, выберите другую версию.${NC}"
-            fi
-        else
-            echo -e "${RED}Неверный выбор. Пожалуйста, попробуйте еще раз.${NC}"
-        fi
+# Отображаем меню выбора с доступными версиями
+select version in "${available_versions[@]}"; do
+    if [[ -n "$version" ]]; then
+        echo "Вы выбрали версию $version"
+        
+        # Загрузка и установка выбранной версии
+        url="https://storage.googleapis.com/kubernetes-release/release/${version}/bin/linux/amd64/kubectl"
+        echo "Загружается kubectl версия $version ..."
+        curl -LO "$url"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+        echo -e "${GREEN}kubectl версия $version успешно установлена!${NC}"
         break
-    done
+    else
+        echo -e "${RED}Неверный выбор. Пожалуйста, попробуйте еще раз.${NC}"
+    fi
 done
+
 
 
 # Получаем список доступных версий Helm через GitHub API
