@@ -1,6 +1,1 @@
-Скрипт развертывает management-хост, для дальнейшей установки Cozystack.
-Как работает скрипт: он скачивает helm, yq, kubectl, docker, talosctl, dialog, nmap, make, kubectl-node-shell, 
-talm (еще одна удобная Open Source-утилита от разработчиков CozyStack для конфигурирования Talos Linux — своего рода Helm для Talos),
-а потом устанавливает их и раскладывает по каталогам. Весь процесс автоматизирован и сопровождается осмысленными диалогами. 
-Кроме того, на хосте поднимаются служба времени NTP, служба доменных имен bind9 и создаются правила 
-для организации доступа из кластера в интернет через management-хост. 
+The script deploys a management host, for further installation of Cozystack. How the script works: it downloads helm, yq, kubectl, docker, talosctl, dialog, nmap, make, kubectl-node-shell, talm (another handy Open Source utility from CozyStack developers for configuring Talos Linux - a kind of Helm for Talos), and then installs them and organizes them into directories. The whole process is automated and accompanied by meaningful dialogs. In addition, the NTP time service, the bind9 domain name service, and rules for organizing access from the cluster to the Internet via the management host are created on the host. 
